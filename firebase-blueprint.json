@@ -1,0 +1,50 @@
+{
+  "entities": {
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "A visitor inquiry submitted through the public portfolio contact form.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name of the sender.",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Reply-to email address of the sender.",
+          "minLength": 5,
+          "maxLength": 254,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$"
+        },
+        "message": {
+          "type": "string",
+          "description": "Body of the contact inquiry.",
+          "minLength": 10,
+          "maxLength": 2000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-generated timestamp when the message was created."
+        },
+        "source": {
+          "type": "string",
+          "description": "Originating client identifier.",
+          "enum": ["portfolio-web"]
+        }
+      },
+      "required": ["name", "email", "message", "createdAt", "source"]
+    }
+  },
+  "firestore": {
+    "/contact_messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/ContactMessage"
+      },
+      "description": "Write-only public inbox for portfolio contact form submissions. Readable only by project owners in the Firebase Console."
+    }
+  }
+}
